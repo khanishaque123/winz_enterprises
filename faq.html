@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - WInz Enterprises</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --background: #f7fafc;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-light: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .header-scrolled {
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            position: relative;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            color: var(--primary);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gradient-light);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .btn-login {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Page Header - Gradient Background */
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 120px 0 60px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 0 0 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: white;
+            border: 2px solid #e1e5e9;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .faq-question:hover {
+            background: #f8fafc;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+            color: var(--primary);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 1.5rem 2rem;
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-support {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 3rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .contact-support h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .contact-support p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .support-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .support-option {
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .support-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .support-option i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .support-option h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .support-option p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-contact {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 55px;
+            border-radius: 20px;
+            width: auto;
+            object-fit: contain;
+          
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--gradient);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .faq-question {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .faq-answer {
+                padding: 0 1.5rem;
+            }
+
+            .faq-item.active .faq-answer {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .contact-support {
+                padding: 2rem 1.5rem;
+            }
+
+            .support-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="nav-container">
+            <a href="index.html" class="logo"> <img src="../uploads/logo.jpeg" alt="WInz Enterprises Logo" class="logo-img">
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="product_page.html">Products</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+                <a href="../admin/login.php" class="btn-login">
+                    <i class="fas fa-user"></i> Admin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our products and services</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-container">
+                <div class="faq-categories">
+                    <button class="category-btn active" data-category="all">All Questions</button>
+                    <button class="category-btn" data-category="orders">Orders & Shipping</button>
+                    <button class="category-btn" data-category="returns">Returns & Refunds</button>
+                    <button class="category-btn" data-category="products">Products</button>
+                    <button class="category-btn" data-category="account">Account & Payment</button>
+                </div>
+
+                <div class="faq-list">
+                    <!-- Orders & Shipping Questions -->
+                    <div class="faq-item" data-category="orders">
+                        <button class="faq-question">
+                            How long does shipping take?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Standard shipping typically takes 3-7 business days within the continental US. Express shipping (2-3 business days) and overnight shipping are also available at checkout.</p>
+                            <p>International shipping times vary by destination but generally take 7-14 business days. You'll receive a tracking number once your order ships.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="orders">
+                        <button class="faq-question">
+                            Do you offer free shipping?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! We offer free standard shipping on all orders over $50. For orders under $50, standard shipping is $5.99.</p>
+                            <p>Free shipping applies to domestic orders only. International shipping costs vary by location.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="orders">
+                        <button class="faq-question">
+                            Can I change my shipping address after ordering?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>You can change your shipping address within 1 hour of placing your order by contacting our customer service team. After 1 hour, changes may not be possible as your order enters processing.</p>
+                            <p>If you need to make changes after this window, please contact us immediately and we'll do our best to help.</p>
+                        </div>
+                    </div>
+
+                    <!-- Returns & Refunds Questions -->
+                    <div class="faq-item" data-category="returns">
+                        <button class="faq-question">
+                            What is your return policy?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We offer a 30-day return policy for most items in original condition with tags attached. Some items like clearance merchandise or personalized products may be final sale.</p>
+                            <p>To initiate a return, visit our Returns Center or contact our customer service team. Return shipping is free for defective items or incorrect shipments.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="returns">
+                        <button class="faq-question">
+                            How long do refunds take to process?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Once we receive your return, refunds are processed within 3-5 business days. The time it takes for the refund to appear in your account depends on your payment method:</p>
+                            <ul>
+                                <li>Credit/Debit Cards: 5-10 business days</li>
+                                <li>PayPal: 3-5 business days</li>
+                                <li>Bank Transfer: 7-10 business days</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Products Questions -->
+                    <div class="faq-item" data-category="products">
+                        <button class="faq-question">
+                            Are your products authentic?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, absolutely! We are an authorized retailer for all brands we carry. Every product is 100% authentic and sourced directly from manufacturers or authorized distributors.</p>
+                            <p>We guarantee the authenticity of all items and offer a money-back guarantee if you're not satisfied.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="products">
+                        <button class="faq-question">
+                            Do you offer product warranties?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Most of our electronics and appliances come with manufacturer warranties that range from 90 days to 2 years. Warranty information is included with your product documentation.</p>
+                            <p>We also offer extended protection plans on select items at checkout. Contact us if you need assistance with warranty claims.</p>
+                        </div>
+                    </div>
+
+                    <!-- Account & Payment Questions -->
+                    <div class="faq-item" data-category="account">
+                        <button class="faq-question">
+                            What payment methods do you accept?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We accept all major payment methods including:</p>
+                            <ul>
+                                <li>Visa, MasterCard, American Express, Discover</li>
+                                <li>PayPal</li>
+                                <li>Apple Pay & Google Pay</li>
+                                <li>WInz Enterprises Gift Cards</li>
+                            </ul>
+                            <p>All payments are processed securely through encrypted channels.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="account">
+                        <button class="faq-question">
+                            How do I reset my password?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>To reset your password:</p>
+                            <ol>
+                                <li>Go to the Login page</li>
+                                <li>Click "Forgot Password"</li>
+                                <li>Enter your email address</li>
+                                <li>Check your email for a password reset link</li>
+                                <li>Follow the instructions to create a new password</li>
+                            </ol>
+                            <p>If you don't receive the email within 10 minutes, check your spam folder or contact our support team.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item" data-category="account">
+                        <button class="faq-question">
+                            Can I track my order?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! Once your order ships, you'll receive a tracking number via email. You can also track your order by:</p>
+                            <ul>
+                                <li>Logging into your account and visiting "Order History"</li>
+                                <li>Using the tracking link in your shipping confirmation email</li>
+                                <li>Contacting our customer service team with your order number</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-support">
+                    <h2>Still Have Questions?</h2>
+                    <p>Our customer support team is here to help you with any questions or concerns.</p>
+                    
+                    <div class="support-options">
+                        <div class="support-option">
+                            <i class="fas fa-envelope"></i>
+                            <h3>Email Support</h3>
+                            <p>Get help via email within 24 hours</p>
+                            <a href="mailto:support@WInz Enterprises.com" class="btn-contact">Email Us</a>
+                        </div>
+                        
+                        <div class="support-option">
+                            <i class="fas fa-phone"></i>
+                            <h3>Phone Support</h3>
+                            <p>Speak directly with our support team</p>
+                            <a href="tel:+12345678900" class="btn-contact">Call Now</a>
+                        </div>
+                        
+                        <div class="support-option">
+                            <i class="fas fa-comments"></i>
+                            <h3>Live Chat</h3>
+                            <p>Instant help during business hours</p>
+                            <a href="#" class="btn-contact">Start Chat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>WInz Enterprises</h3>
+                <p>Your one-stop destination for premium products with exceptional quality and service.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="product_page.html">Products</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Customer Service</h3>
+                <ul class="footer-links">
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                    <li><a href="returns-refunds.html">Returns & Refunds</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Street, City, Country</li>
+                    <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                    <li><i class="fas fa-envelope"></i> info@WInz Enterprises.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WInz Enterprises. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #f5576c;"></i></p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            // Initialize first FAQ item as active
+            if (faqItems.length > 0) {
+                faqItems[0].classList.add('active');
+            }
+            
+            // FAQ accordion functionality
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all items
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    // Open clicked item if it wasn't active
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+            
+            // Category filtering
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    
+                    // Update active category button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Filter FAQ items
+                    faqItems.forEach(item => {
+                        if (category === 'all' || item.getAttribute('data-category') === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Update cart count
+            function updateCartCount() {
+                try {
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    document.getElementById('cartCount').textContent = totalItems;
+                } catch (e) {
+                    console.error('Error updating cart count:', e);
+                }
+            }
+            
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

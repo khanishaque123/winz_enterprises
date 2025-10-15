@@ -1,0 +1,15 @@
+# Prevent direct access to process_checkout.php from browser
+<Files "process_checkout.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Enable CORS for development
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type"
+
+# Handle preflight requests
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]

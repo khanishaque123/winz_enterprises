@@ -164,40 +164,48 @@
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
-        /* Mobile Menu - FIXED */
-        .mobile-menu-btn {
+        /* Mobile Menu - CORRECTED */
+        .mobile-menu-toggle {
             display: none;
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: var(--text-dark);
             cursor: pointer;
-            padding: 5px;
+            color: var(--text-dark);
         }
 
         .mobile-menu {
-            display: block;
             position: fixed;
-            top: 70px;
+            top: 0;
             left: 0;
             width: 100%;
+            height: 100vh;
             background: white;
-            box-shadow: var(--shadow);
-            z-index: 999;
-            padding: 1rem 0;
-            transform: translateY(-100%);
+            z-index: 2000;
+            transform: translateX(-100%);
             transition: transform 0.3s ease;
-            visibility: hidden;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
         }
 
         .mobile-menu.active {
-            transform: translateY(0);
-            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
         }
 
         .mobile-nav-links {
             list-style: none;
-            text-align: center;
+            margin-bottom: 2rem;
         }
 
         .mobile-nav-links li {
@@ -205,17 +213,23 @@
         }
 
         .mobile-nav-links a {
+            display: block;
+            padding: 12px 0;
             text-decoration: none;
             color: var(--text-dark);
-            font-weight: 500;
             font-size: 1.1rem;
-            padding: 0.5rem 0;
-            display: block;
-            transition: color 0.3s ease;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
         }
 
-        .mobile-nav-links a:hover {
-            color: var(--primary);
+        .mobile-nav-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav-actions .btn-login {
+            text-align: center;
         }
 
         /* Hero Section */
@@ -751,7 +765,7 @@
                 display: none;
             }
 
-            .mobile-menu-btn {
+            .mobile-menu-toggle {
                 display: block;
             }
 
@@ -855,24 +869,34 @@
                 <a href="../admin/login.php" class="btn-login">
                     <i class="fas fa-user"></i> Admin 
                 </a>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
-        
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <ul class="mobile-nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="product_page.html">Products</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="cart.html">Cart (<span id="mobileCartCount">0</span>)</a></li>
-                <li><a href="../admin/login.php">Admin Login</a></li>
-            </ul>
-        </div>
     </header>
+
+    <!-- Mobile Menu - CORRECTED -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product_page.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-actions">
+            <a href="cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i> Cart
+                <span class="cart-count" id="mobileCartCount">0</span>
+            </a>
+            <a href="../admin/login.php" class="btn-login">
+                <i class="fas fa-user"></i> Admin Login
+            </a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1008,44 +1032,30 @@
     </footer>
 
     <script>
-        // Mobile menu functionality - FIXED
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        // Mobile menu functionality - CORRECTED
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
         
-        mobileMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            mobileMenu.classList.toggle('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            if (mobileMenu.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (mobileMenu.classList.contains('active') && 
-                !mobileMenu.contains(e.target) && 
-                !mobileMenuBtn.contains(e.target)) {
-                closeMobileMenu();
-            }
-        });
-
-        // Close menu when clicking on a link
-        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                closeMobileMenu();
+        if (mobileMenuToggle && mobileMenu && mobileMenuClose) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
             });
-        });
-
-        function closeMobileMenu() {
-            mobileMenu.classList.remove('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
+            
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close mobile menu when clicking on a link
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
         }
 
         // Cart functionality
@@ -1082,7 +1092,8 @@
             showNotification('Product added to cart!');
             
             // Close mobile menu if open
-            closeMobileMenu();
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         function showNotification(message) {

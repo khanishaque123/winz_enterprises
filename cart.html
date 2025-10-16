@@ -55,7 +55,7 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -68,6 +68,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 55px;
+            border-radius: 20px;
+            width: auto;
+            object-fit: contain;
         }
 
         .nav-links {
@@ -151,6 +160,74 @@
         .btn-login:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-nav-links a {
+            display: block;
+            padding: 12px 0;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-nav-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav-actions .btn-login {
+            text-align: center;
         }
 
         /* Page Header - Gradient Background */
@@ -320,6 +397,7 @@
             display: flex;
             gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .quantity-controls {
@@ -516,19 +594,6 @@
             gap: 1rem;
             margin-top: 1rem;
         }
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            height: 55px;
-            border-radius: 20px;
-            width: auto;
-            object-fit: contain;
-          
-        }
 
         .social-links a {
             display: flex;
@@ -563,6 +628,10 @@
                 display: none;
             }
 
+            .mobile-menu-toggle {
+                display: block;
+            }
+
             .cart-container {
                 grid-template-columns: 1fr;
             }
@@ -584,6 +653,25 @@
             .page-header h1 {
                 font-size: 2.2rem;
             }
+            
+            .item-image {
+                align-self: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cart-items, .cart-summary {
+                padding: 1.5rem;
+            }
+            
+            .item-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .quantity-controls {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -591,7 +679,9 @@
     <!-- Header -->
     <header class="main-header">
         <div class="nav-container">
-            <a href="index.html" class="logo"> <img src="../uploads/logo.jpeg" alt="WInz Enterprises Logo" class="logo-img">
+            <a href="index.html" class="logo">
+                <img src="../uploads/logo.jpeg" alt="WInz Enterprises Logo" class="logo-img">
+            </a>
             
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -609,8 +699,34 @@
                     <i class="fas fa-user"></i> Admin
                 </a>
             </div>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product_page.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-actions">
+            <a href="cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i> Cart
+                <span class="cart-count" id="mobileCartCount">0</span>
+            </a>
+            <a href="../admin/login.php" class="btn-login">
+                <i class="fas fa-user"></i> Admin Login
+            </a>
+        </div>
+    </div>
 
     <!-- Page Header - Now with gradient background -->
     <section class="page-header">
@@ -670,7 +786,7 @@
                 <ul class="footer-links">
                     <li><i class="fas fa-map-marker-alt"></i> 123 Street, City, Country</li>
                     <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
-                    <li><i class="fas fa-envelope"></i> info@WInz Enterprises.com</li>
+                    <li><i class="fas fa-envelope"></i> info@winzenterprises.com</li>
                 </ul>
             </div>
         </div>
@@ -680,6 +796,32 @@
     </footer>
 
     <script>
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        
+        if (mobileMenuToggle && mobileMenu && mobileMenuClose) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close mobile menu when clicking on a link
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+        
         // Cart System - Complete with real-time updates
         class CartSystem {
             constructor() {
@@ -818,6 +960,7 @@
 
             updateCartCount() {
                 const cartCountElements = document.querySelectorAll('.cart-count');
+                const mobileCartCount = document.getElementById('mobileCartCount');
                 const totalItems = this.getTotalItems();
                 
                 cartCountElements.forEach(element => {
@@ -825,6 +968,10 @@
                         element.textContent = totalItems;
                     }
                 });
+                
+                if (mobileCartCount) {
+                    mobileCartCount.textContent = totalItems;
+                }
             }
 
             // Method to load and render the cart page
@@ -865,7 +1012,7 @@
                         <div class="cart-item" data-id="${item.id}">
                             <div class="item-image">
                                 ${item.image ? 
-                                    `<img src="../uploads/${item.image}" alt="${item.name}" 
+                                    `<img src="${item.image.startsWith('http') ? item.image : '../uploads/' + item.image}" alt="${item.name}" 
                                           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : 
                                     ''
                                 }

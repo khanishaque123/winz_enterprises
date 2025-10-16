@@ -147,6 +147,74 @@
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 2000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-nav-links a {
+            display: block;
+            padding: 12px 0;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-nav-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav-actions .btn-login {
+            text-align: center;
+        }
+
         /* Page Header */
         .page-header {
             background: var(--gradient);
@@ -525,6 +593,7 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .modal-overlay.active {
@@ -534,12 +603,14 @@
         .success-modal {
             background: white;
             border-radius: 15px;
-            padding: 3rem;
+            padding: 2rem;
             text-align: center;
             max-width: 500px;
-            width: 90%;
+            width: 100%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: modalAppear 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes modalAppear {
@@ -600,6 +671,8 @@
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
         }
 
         .btn-continue:hover {
@@ -707,13 +780,27 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .checkout-container {
+                gap: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
 
+            .mobile-menu-toggle {
+                display: block;
+            }
+
             .checkout-container {
                 grid-template-columns: 1fr;
+            }
+
+            .checkout-form {
+                padding: 1.5rem;
             }
 
             .form-row {
@@ -724,12 +811,94 @@
                 grid-template-columns: 1fr;
             }
 
+            .page-header {
+                padding: 50px 0 40px;
+            }
+
             .page-header h1 {
                 font-size: 2.2rem;
             }
 
             .modal-actions {
                 flex-direction: column;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+
+            .success-modal {
+                padding: 1.5rem;
+            }
+
+            .success-modal h2 {
+                font-size: 1.5rem;
+            }
+
+            .order-details {
+                padding: 1rem;
+            }
+
+            .order-details p {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .page-header {
+                padding: 90px 0 30px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .checkout-form {
+                padding: 1rem;
+            }
+
+            .form-section {
+                padding-bottom: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .order-summary {
+                padding: 1.5rem;
+            }
+
+            .summary-title {
+                font-size: 1.2rem;
+            }
+
+            .modal-actions .btn-continue {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
         }
     </style>
@@ -738,7 +907,7 @@
     <!-- Header -->
     <header class="main-header">
         <div class="nav-container">
-            <a href="index.html" class="logo">WInz Enterprises</a>
+             <a href="index.html" class="logo"> <img src="../uploads/logo.jpeg" alt="WInz Enterprises Logo" class="logo-img">
             
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -756,8 +925,34 @@
                     <i class="fas fa-user"></i> Admin
                 </a>
             </div>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product_page.html">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-actions">
+            <a href="cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i> Cart
+                <span class="cart-count" id="mobileCartCount">0</span>
+            </a>
+            <a href="../admin/login.php" class="btn-login">
+                <i class="fas fa-user"></i> Admin Login
+            </a>
+        </div>
+    </div>
 
     <!-- Page Header -->
     <section class="page-header">
@@ -1029,6 +1224,32 @@
     </footer>
 
     <script>
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        
+        if (mobileMenuToggle && mobileMenu && mobileMenuClose) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close mobile menu when clicking on a link
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+        
         // Checkout functionality - Client-side only (no PHP needed)
         let selectedPaymentMethod = 'credit';
         
@@ -1043,9 +1264,12 @@
         function updateCartCount() {
             const cart = getCart();
             const cartCount = document.getElementById('cartCount');
-            if (cartCount) {
+            const mobileCartCount = document.getElementById('mobileCartCount');
+            
+            if (cartCount || mobileCartCount) {
                 const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                cartCount.textContent = totalItems;
+                if (cartCount) cartCount.textContent = totalItems;
+                if (mobileCartCount) mobileCartCount.textContent = totalItems;
             }
         }
         

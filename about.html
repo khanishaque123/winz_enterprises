@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - WInz Enterprises</title>
-    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Reuse the same CSS variables and header/footer styles from product page */
@@ -45,6 +44,7 @@
             z-index: 1000;
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
+            padding: 15px 0;
         }
 
         .header-scrolled {
@@ -62,12 +62,23 @@
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
             text-decoration: none;
+        }
+
+        .logo-img {
+            height: 55px;
+            border-radius: 20px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-left: 10px;
+            color: var(--primary);
         }
 
         .nav-links {
@@ -153,6 +164,60 @@
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
+        /* Mobile Menu - ADDED */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu {
+            display: block;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: var(--shadow);
+            z-index: 999;
+            padding: 1rem 0;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            visibility: hidden;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-nav-links a:hover {
+            color: var(--primary);
+        }
+
         /* Page Header */
         .page-header {
             background: var(--gradient);
@@ -184,19 +249,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            height: 55px;
-            border-radius: 20px;
-            width: auto;
-            object-fit: contain;
-          
         }
 
         .about-content {
@@ -466,6 +518,10 @@
                 display: none;
             }
 
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .about-content {
                 grid-template-columns: 1fr;
                 gap: 2rem;
@@ -479,11 +535,66 @@
                 font-size: 2rem;
             }
         }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 15px;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .page-header {
+                padding: 100px 0 40px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .about-text h2 {
+                font-size: 1.8rem;
+            }
+
+            .about-text p {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="main-header">
+    <header class="main-header" id="mainHeader">
         <div class="nav-container">
             <a href="index.html" class="logo"> <img src="../uploads/logo.jpeg" alt="WInz Enterprises Logo" class="logo-img">
             
@@ -502,7 +613,22 @@
                 <a href="../admin/login.php" class="btn-login">
                     <i class="fas fa-user"></i> Admin
                 </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
+        </div>
+        
+        <!-- Mobile Menu - ADDED -->
+        <div class="mobile-menu" id="mobileMenu">
+            <ul class="mobile-nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="product_page.html">Products</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html">Cart (<span id="mobileCartCount">0</span>)</a></li>
+                <li><a href="../admin/login.php">Admin Login</a></li>
+            </ul>
         </div>
     </header>
 
@@ -667,7 +793,7 @@
                     <ul class="footer-links">
                         <li><i class="fas fa-map-marker-alt"></i> 123 Street, City, Country</li>
                         <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
-                        <li><i class="fas fa-envelope"></i> info@WInz Enterprises.com</li>
+                        <li><i class="fas fa-envelope"></i> info@winzenterprises.com</li>
                     </ul>
                 </div>
             </div>
@@ -678,14 +804,67 @@
     </footer>
 
     <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(e.target) && 
+                !mobileMenuBtn.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+
         // Cart functionality
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         
         function updateCartCount() {
             const cartCount = document.getElementById('cartCount');
+            const mobileCartCount = document.getElementById('mobileCartCount');
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
+            
+            if (cartCount) cartCount.textContent = totalItems;
+            if (mobileCartCount) mobileCartCount.textContent = totalItems;
         }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 100) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
 
         // Update cart count on page load
         document.addEventListener('DOMContentLoaded', updateCartCount);

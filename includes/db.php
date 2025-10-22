@@ -1,22 +1,28 @@
 <?php
 // includes/db.php
 $host = 'localhost';
-$dbname = 'postgres'; // Changed from 'postgres' to 'postgres'
+$dbname = 'admin_dashboard';
 $username = 'postgres';
-$password = 'ishaque@321';
-$port = '5432';
+$password = 'Danish@321';
+$port = '5433';
 
 try {
     $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error_message = "PostgreSQL Connection Failed: " . $e->getMessage();
-    $error_message .= "<br><br>To fix this:";
-    $error_message .= "<br>1. Make sure PostgreSQL is running on port 5432";
-    $error_message .= "<br>2. Check if database 'postgres' exists";
-    $error_message .= "<br>3. Verify username/password";
-    $error_message .= "<br>4. Enable pdo_pgsql extension in php.ini";
-    die($error_message);
+    error_log("Database connection failed: " . $e->getMessage());
+    // Don't output detailed errors in production
+    if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'Postman') !== false) {
+        // For Postman requests, return JSON error
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Database connection failed'
+        ]);
+    } else {
+        echo "Database connection failed. Please try again later.";
+    }
+    exit;
 }
 ?>
